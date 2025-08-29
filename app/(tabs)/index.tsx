@@ -41,7 +41,7 @@ export default function HomeScreen() {
           {`Tap the Explore tab to learn more about what's included in this starter app.`}
         </ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
+<ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
         <ThemedText>
           {`When you're ready, run `}
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   stepContainer: {
+    flex: 1,
     gap: 8,
     marginBottom: 8,
   },
