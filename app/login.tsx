@@ -171,19 +171,20 @@ const styles = StyleSheet.create({
     position: 'relative',
     borderRadius: 16,
     backgroundColor: '#1a1a1a',
-    // Neumorphism effect
+    // Neumorphism effect - pushed in appearance
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
-    // Combined shadow for neumorphism
+    borderColor: 'rgba(0, 0, 0, 0.2)',
+    // Outer shadow for depth
     shadowColor: '#000',
-    shadowOffset: { width: 4, height: 4 },
+    shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.8,
-    shadowRadius: 4,
+    shadowRadius: 3,
     elevation: 5,
-    // Inner shadow using text shadow
-    textShadowColor: 'rgba(255, 255, 255, 0.1)',
-    textShadowOffset: { width: -2, height: -2 },
-    textShadowRadius: 2,
+    // Inner shadow for pushed-in effect
+    borderTopColor: 'rgba(0, 0, 0, 0.3)',
+    borderLeftColor: 'rgba(0, 0, 0, 0.3)',
+    borderRightColor: 'rgba(255, 255, 255, 0.05)',
+    borderBottomColor: 'rgba(255, 255, 255, 0.05)',
   },
   input: {
     height: 55,
@@ -195,12 +196,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#ffffff',
     backgroundColor: '#1a1a1a',
-    shadowColor: '#2a2a2a',
-    shadowOffset: { width: -3, height: -3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    textShadowColor: '#2a2a2a',
-    textShadowRadius: 4,
+    // Inner glow effect
+    textShadowColor: 'rgba(255, 255, 255, 0.1)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
+    // Subtle gradient overlay for depth
+    backgroundImage: 'linear-gradient(to bottom right, rgba(255,255,255,0.02), rgba(0,0,0,0.1))',
   },
   button: {
     width: '80%',
