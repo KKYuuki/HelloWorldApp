@@ -1,12 +1,16 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Animated, Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
+  
+  // Static opacity for connect text
+  const connectTextOpacity = 0.8;
 
   const handleLogin = () => {
     setLoading(true);
@@ -32,24 +36,26 @@ const LoginScreen = () => {
             resizeMode="contain"
           />
           <Text style={styles.title}>Spotify</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          value={username}
-          onChangeText={setUsername}
-          autoCapitalize="none"
-          placeholderTextColor="#999"
-          autoCorrect={false}
-          returnKeyType="next"
-          onSubmitEditing={() => {
-            // Focus password input when next is pressed
-            const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
-            passwordInput?.focus();
-          }}
-        />
-        <View style={styles.passwordContainer}>
+        <View style={styles.inputContainer}>
           <TextInput
-            style={[styles.input, { width: '100%' }]}
+            style={styles.input}
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+            placeholderTextColor="#999"
+            autoCorrect={false}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              // Focus password input when next is pressed
+              const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
+              passwordInput?.focus();
+            }}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
             placeholder="Password"
             value={password}
             onChangeText={setPassword}
@@ -68,18 +74,34 @@ const LoginScreen = () => {
             styles.button,
             (isLoading || !username || !password) && styles.buttonDisabled,
             pressed && styles.buttonPressed
-          ]} 
+          ]}
           onPress={handleLogin}
           disabled={isLoading || !username || !password}
         >
-          <Text style={styles.buttonText}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
-          </Text>
+          <LinearGradient
+            colors={['#0d5c2d', '#1fd65e']}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
+            style={styles.gradient}
+          >
+            <Text style={styles.buttonText}>
+              {isLoading ? 'Signing In...' : 'Sign In'}
+            </Text>
+          </LinearGradient>
         </Pressable>
 
-        <Text style={styles.connectwith}>
+        <View style={styles.connectContainer}>
+          <Animated.Text 
+            style={[
+              styles.connectwith,
+              {
+                opacity: connectTextOpacity,
+              }
+            ]}
+          >
             Be Connect With
-        </Text>
+          </Animated.Text>
+        </View>
         
         <View style={styles.socialButtons}>
           <Pressable 
@@ -107,9 +129,14 @@ const LoginScreen = () => {
           </Pressable>
         </View>
 
-        <Text style={styles.hint}>
-          Dont have an account? <Text style={styles.connectwith}>Sign up</Text>
-        </Text>
+        <View style={styles.hintContainer}>
+          <Text style={styles.hint}>Dont have an account? </Text>
+          <Pressable>
+            <Text style={styles.signupText}>
+              Sign up
+            </Text>
+          </Pressable>
+        </View>
         </View>
       </KeyboardAvoidingView>
     </View>
@@ -138,39 +165,71 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFFFFF', // White color
   },
-  input: {
-    height: 50,
-    width: '75%',
+  inputContainer: {
+    width: '80%',
+    marginBottom: 24,
+    position: 'relative',
+    borderRadius: 16,
+    backgroundColor: '#1a1a1a',
+    // Neumorphism effect
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 50,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
+    // Combined shadow for neumorphism
+    shadowColor: '#000',
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
+    // Inner shadow using text shadow
+    textShadowColor: 'rgba(255, 255, 255, 0.1)',
+    textShadowOffset: { width: -2, height: -2 },
+    textShadowRadius: 2,
+  },
+  input: {
+    height: 55,
+    width: '100%',
+    borderWidth: 0,
+    borderRadius: 16,
     paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingRight: 100, // Make room for forgot password
     fontSize: 16,
-    backgroundColor: '#333333',
     color: '#ffffff',
-    alignSelf: 'center',
+    backgroundColor: '#1a1a1a',
+    shadowColor: '#2a2a2a',
+    shadowOffset: { width: -3, height: -3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    textShadowColor: '#2a2a2a',
+    textShadowRadius: 4,
   },
   button: {
-    height: 50,
-    width: '75%',
-    backgroundColor: '#1DB954', // Spotify green
-    padding: 15,
-    borderRadius: 25, // More rounded corners
+    width: '80%',
+    height: 55,
+    borderRadius: 27.5,
+    overflow: 'hidden',
+    marginTop: 40,
+    shadowColor: '#0a0a0a',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+    elevation: 5,
+    backgroundColor: 'transparent',
+  },
+  gradient: {
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
-    elevation: 3, // Shadow for Android
-    shadowColor: '#000', // Shadow for iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    borderRadius: 25,
   },
   buttonDisabled: {
-    opacity: 0.5,
+    opacity: 0.6,
+    shadowOpacity: 0.3,
   },
   buttonPressed: {
-    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
+    opacity: 0.9,
+    shadowOffset: { width: 2, height: 2 },
   },
   buttonText: {
     color: 'white',
@@ -178,29 +237,44 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   hint: {
-    marginTop: 30,
-    textAlign: 'center',
     fontSize: 12,
-    opacity: 0.5,
-    color: '#ffffff',
+    color: '#999999',
+    opacity: 0.8,
+  },
+  signupText: {
+    color: '#1DB954',
+    fontWeight: 'bold',
+    fontSize: 14,
+    textShadowColor: 'rgba(29, 185, 84, 0.7)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
+  hintContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  connectContainer: {
+    marginTop: 30,
+    alignItems: 'center',
   },
   connectwith: {
-    marginTop: 30,
-    textAlign: 'center',
-    fontSize: 12,
-    opacity: 0.7,
+    fontSize: 16,
     color: '#1DB954',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   socialButtons: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 15,
-    marginBottom: 25,
+    marginTop: 20,
+    marginBottom: 20,
   },
   socialButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: 27.5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
@@ -221,17 +295,13 @@ const styles = StyleSheet.create({
     height: 32,
     tintColor: '#ffffff',
   },
-  passwordContainer: {
-    width: '75%',
-    position: 'relative',
-    marginBottom: 20,
-  },
   forgotPassword: {
     position: 'absolute',
-    right: 10,
-    bottom: -8,
+    right: 15,
+    top: '50%',
+    marginTop: 35, // Half of font size to center vertically
     fontSize: 12,
-    opacity: 0.5,
-    color: '#ffffff',
+    color: '#1DB954',
+    fontWeight: '600',
   },
 });
